@@ -497,13 +497,13 @@ public final class ReadMapOrCacheP<F extends CompletableFuture, B, R> extends Ab
             MapService service = nodeEngine.getService(MapService.SERVICE_NAME);
             mapServiceContext = service.getMapServiceContext();
         }
-/*
+
         @Nonnull
         @Override
-        public InternalCompletableFuture<MapEntriesWithCursor> readBatch(int partitionId, IterationPointer[] pointers) {
+        public CompletableFuture<MapEntriesWithCursor> readBatch(int partitionId, IterationPointer[] pointers) {
 
             boolean isOwned = mapServiceContext.getOrInitCachedMemberPartitions().contains(partitionId);
-            if (isOwned) {
+//            if (isOwned) {
                 PartitionContainer partitionContainer = mapServiceContext.getPartitionContainer(partitionId);
                 RecordStore recordStore = partitionContainer.getExistingRecordStore(mapProxyImpl.getName());
 
@@ -523,22 +523,22 @@ public final class ReadMapOrCacheP<F extends CompletableFuture, B, R> extends Ab
                     future = InternalCompletableFuture.newCompletedFuture(new MapEntriesWithCursor(new ArrayList<>(), new IterationPointer[]{new IterationPointer(-1, 256)}));
                 }
 
-                isOwned = mapServiceContext.getOrInitCachedMemberPartitions().contains(partitionId);
-                if (isOwned) {
+//                isOwned = mapServiceContext.getOrInitCachedMemberPartitions().contains(partitionId);
+//                if (isOwned) {
                     return future;
-                }
+//                }
                 //Partition migrated!
-                MapOperationProvider operationProvider = mapProxyImpl.getOperationProvider();
-                Operation op = operationProvider.createFetchEntriesOperation(objectName, pointers, MAX_FETCH_SIZE);
-                return mapProxyImpl.getOperationService().invokeOnPartition(mapProxyImpl.getServiceName(), op, partitionId);
-            }
+//                MapOperationProvider operationProvider = mapProxyImpl.getOperationProvider();
+//                Operation op = operationProvider.createFetchEntriesOperation(objectName, pointers, MAX_FETCH_SIZE);
+//                return mapProxyImpl.getOperationService().invokeOnPartition(mapProxyImpl.getServiceName(), op, partitionId);
+//            }
 
             //Partition migrated!
-            MapOperationProvider operationProvider = mapProxyImpl.getOperationProvider();
-            Operation op = operationProvider.createFetchEntriesOperation(objectName, pointers, MAX_FETCH_SIZE);
-            return mapProxyImpl.getOperationService().invokeOnPartition(mapProxyImpl.getServiceName(), op, partitionId);
+//            MapOperationProvider operationProvider = mapProxyImpl.getOperationProvider();
+//            Operation op = operationProvider.createFetchEntriesOperation(objectName, pointers, MAX_FETCH_SIZE);
+//            return mapProxyImpl.getOperationService().invokeOnPartition(mapProxyImpl.getServiceName(), op, partitionId);
         }
-*/
+/*
 
         @Nonnull @Override
         public CompletableFuture<MapEntriesWithCursor> readBatch(int partitionId, IterationPointer[] pointers) {
@@ -582,7 +582,7 @@ public final class ReadMapOrCacheP<F extends CompletableFuture, B, R> extends Ab
         private void scheduleForLater(CompletableFuture<MapEntriesWithCursor> f, int partitionId, IterationPointer[] pointers) {
             nodeEngine.getExecutionService().schedule(() -> read0(f, partitionId, pointers), 100, TimeUnit.MILLISECONDS);
         }
-
+*/
         private MapEntriesWithCursor accessRecordStore(int partitionId, IterationPointer[] pointers) {
             PartitionContainer partitionContainer = mapServiceContext.getPartitionContainer(partitionId);
             RecordStore recordStore = partitionContainer.getExistingRecordStore(mapProxyImpl.getName());
